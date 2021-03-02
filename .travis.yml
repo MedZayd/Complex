@@ -1,10 +1,14 @@
 sudo: required
+
+# Telling travis to use docker service
 services:
   - docker
 
+# We build the image to test our client app
 before_install:
-  - docker build -t medzayd/react-test -f ./client/Dockerfile.dev
+  - docker build -t medzayd/react-test -f ./client/Dockerfile.dev ./client
 
+# Run the created Image
 script:
   - docker run -e CI=true medzayd/react-test npm test
 
