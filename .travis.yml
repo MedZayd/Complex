@@ -1,0 +1,25 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t medzayd/react-test -f ./client/Dockerfile.dev
+
+script:
+  - docker run -e CI=true medzayd/react-test npm test
+
+after_success:
+  # Build all docker production images for all services
+  - docker build -t medzayd/complex-client ./client
+  - docker build -t medzayd/complex-nginx ./nginx
+  - docker build -t medzayd/complex-server ./server
+  - docker build -t medzayd/complex-worker ./worker
+
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+  # Take those images and push them to docker hub
+  - docker push medzayd/complex-client
+  - docker push medzayd/complex-nginx
+  - docker push medzayd/complex-server
+  - docker push medzayd/complex-worker
