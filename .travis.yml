@@ -8,7 +8,7 @@ services:
 before_install:
   - docker build -t medzayd/react-test -f ./client/Dockerfile.dev ./client
 
-# Run the created Image
+# Run the created Image react-test
 script:
   - docker run -e CI=true medzayd/react-test npm test
 
