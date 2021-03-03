@@ -27,3 +27,15 @@ after_success:
   - docker push medzayd/complex-nginx
   - docker push medzayd/complex-server
   - docker push medzayd/complex-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-east-2'
+  app: 'complex'
+  env: 'Complex-env'
+  bucket_name: 'elasticbeanstalk-us-east-2-290276710827'
+  backet_path: 'docker-complex'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
